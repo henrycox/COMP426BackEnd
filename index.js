@@ -48,6 +48,11 @@ app.post('/userData', (req, res) => {
     return res.json(true)
 })
 
+/*
+submits a user's poll results and adds them to the database
+
+takes each position and adds a vote to the selected candidate on the backend JSON object
+*/
 app.post('/pollEntry', (req, res) => {
     data = req.body
     /* let president = req.body.president
@@ -64,12 +69,22 @@ app.post('/pollEntry', (req, res) => {
 
 })
 
+/*
+returns all stored poll results
+
+returns the stored JSON object to the front end
+*/
 app.get('/pollResults', (req, res) => {
     let results = pollData.getPollData()
     res.json(results)
     return
 })
 
+/*
+updates password
+
+****use this for updating pw in "update account"
+*/
 app.put('/updatePassword', (req, res) => {
     let user = req.session.user
     let newPass = req.body.password
@@ -93,6 +108,13 @@ app.put('/updatePassword', (req, res) => {
     return
 })
 
+/*
+updates party affiliation of user
+
+after taking the political affiliation quiz, based on their results users will be assigned to
+a party (republican/democrat). There is a field within each user object for political affiliation
+that will be assigned after this function is called.
+*/
 app.put('/updateAffiliation', (req, res) => {
     let user = req.session.user
     let pa = req.body.pa
@@ -116,6 +138,11 @@ app.put('/updateAffiliation', (req, res) => {
     return
 })
 
+/*
+creates new user account
+
+
+*/
 app.post('/createUser', (req, res) => {
     let user = req.body.login
     let password = req.body.password
@@ -141,7 +168,11 @@ app.post('/createUser', (req, res) => {
     }
 })
 
+/*
+logs user in using their username & password
 
+
+*/
 app.post('/login', (req, res) => {
     let user = req.body.login
     let password = req.body.password
@@ -170,7 +201,11 @@ app.get('/userPersonalInfo', (req, res) => {
     return
 })
 
+/*
+this deletes a user's account
 
+option for user to delete their account when updating their account info
+*/
 app.delete('/user', (req, res) => {
     if(req.session.user == undefined) {
         res.status(403).send("unauthorized")
@@ -191,7 +226,11 @@ app.delete('/user', (req, res) => {
 })
 
 
+/*
+logs a user out of the website
 
+
+*/
 app.get('/logout', (req, res) => {
     delete req.session.user
     res.json(true)
