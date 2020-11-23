@@ -221,7 +221,7 @@ app.delete('/user', (req, res) => {
         res.status(403).send("unauthorized")
         return
     }
-    login_data.delete(user)
+    login_data.del(user)
     res.json(true)
 })
 
