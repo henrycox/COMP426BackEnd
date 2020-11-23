@@ -3,51 +3,37 @@ const data = require('data-store')( {path: process.cwd() + '/data/UserData.json'
 
 class UserData {
 
-    constructor(id, owner, data) {
-        this.id = id
-        this.owner = owner
-        this.info = info
+    constructor(data) {
+        this.data = data
     }
 
-    update (info) {
-        this.info = info
-        data.set(this.id.toString(), this)
+    update (data) {
+        this.data = data
+        data.set(this.user, this)
     }
 
     delete() {
-        data.del(this.id.toString())
+        data.del(this.user)
     }
 
 }
 
-UserData.getAllIDs = () => {
-    return Object.keys(data.data).map((id => {return parseInt(id)}))
+UserData.updateData =(user, data) => {
+     data.set(user, data)
 }
 
-UserData.getAllIDsForOwner = (owner) => {
-    return Object.keys(data.data).filter(id => data.get(id).owner == owner).map((id => {return parseInt(id)}))
-}
 
-UserData.getUserDataByID = (id) => {
-    let thisData = data.get(id)
+UserData.getUserDataByID = (user) => {
+    let thisData = data.get(user)
     if (thisData == null) {
         return null
     }
-    return new UserData(thisData.id, thisData.owner, thisData.info)
+    return new UserData(thisData)
 }
 
-UserData.next_id = UserData.getAllIDs().reduce((max, next_id) => {
-    if (max < next_id) {
-        return next_id
-    }
-    return max
-}, - 1) + 1
-
-UserData.create = (owner, info) => {
-    let id = UserData.next_id
-    UserData.next_id += 1
-    let b = new UserData (id, owner, info)
-    data.set(b.id.toString(), b)
+UserData.create = (user, data) => {
+    let b = new UserData (data)
+    data.set(user, b)
     return b
 }
 

@@ -24,6 +24,30 @@ const pollData = require('./pollData.js')
 const login_data = require('data-store')( {path: process.cwd() + '/data/users.json'})
 
 
+
+app.put('/userData', (req, res) => {
+    user = req.session.user
+    let data = req.body.data
+    UserData.updateData(user, data)
+    res.json(true)
+    return
+})
+
+app.get('/userData', (req, res) => {
+    user = req.session.user
+    let data = userData.getUserDataByID(user)
+    res.json(data)
+    return
+}) 
+
+
+app.post('/userData', (req, res) => {
+    user = req.session.user
+    data = req.body.data
+    userData.create(user, data)
+    return res.json(true)
+})
+
 app.post('/pollEntry', (req, res) => {
     data = req.body
     /* let president = req.body.president
@@ -43,6 +67,30 @@ app.post('/pollEntry', (req, res) => {
 app.get('/pollResults', (req, res) => {
     let results = pollData.getPollData()
     res.json(results)
+    return
+})
+
+app.put('/updatePassword', (req, res) => {
+    let user = req.session.user
+    let newPass = req.body.password
+    if(req.session.user == undefined) {
+        res.status(403).send("unauthorized")
+        return
+    }
+    let data = login_data.get(user)
+    if (user == null) {
+        res.status(404).send('UserData not found')
+        return
+    }
+    if(user != req.session.user) {
+        res.status(403).send("unauthorized")
+        return
+    }
+    data.password = newPass
+    login_data.set(user, data)
+
+    res.json(true)
+    return
 })
 
 app.post('/createUser', (req, res) => {
@@ -68,9 +116,7 @@ app.post('/createUser', (req, res) => {
     }
 })
 
-app.get('/hello', (req, res) => {
-    res.json({"hello": "word"})
-});
+
 app.post('/login', (req, res) => {
     console.log("here")
     let user = req.body.login
@@ -106,83 +152,23 @@ app.get('/userPersonalInfo', (req, res) => {
     return
 })
 
-app.get('/userInfo', (req, res) => {
-    if(req.session.user == undefined) {
-        res.status(403).send("unauthorized")
-        return
-    }
-    res.json(UserData.getAllIDsForOwner(req.session.user))
-    return
-})
 
-app.get('/userInfo/:id', (req, res) => {
+app.delete('/user', (req, res) => {
     if(req.session.user == undefined) {
         res.status(403).send("unauthorized")
         return
     }
-    let b = UserData.getUserDataByID(req.params.id)
-    if (b == null) {
+    user = req.session.user
+    data = login_data.get(user)
+    if (data == null) {
         res.status(404).send('UserData not found')
         return
     }
-    if(b.owner != req.session.user) {
+    if(user != req.session.user) {
         res.status(403).send("unauthorized")
         return
     }
-    res.json(b)
-})
-
-app.post('/userInfo', (req, res) => {
-    if(req.session.user == undefined) {
-        res.status(403).send("unauthorized")
-        return
-    }
-
-
-    let b = UserData.create(req.session.user, req.body.userdata)
-    if (b == null) {
-        res.status(400).send('bad request')
-        return
-    }
-    return res.json(b)
-})
-
-app.put('/userInfo/:id', (req, res) => {
-    if(req.session.user == undefined) {
-        res.status(403).send("unauthorized")
-        return
-    }
-    let b = UserData.getUserDataByID(req.params.id)
-    if (b == null) {
-        res.status(404).send('UserData not found')
-        return
-    }
-    if(b.owner != req.session.user) {
-        res.status(403).send("unauthorized")
-        return
-    }
-    let info = req.body.info
-    b.info = info
-    b.update()
-
-    res.json(b.id)
-})
-
-app.delete('/userInfo/:id', (req, res) => {
-    if(req.session.user == undefined) {
-        res.status(403).send("unauthorized")
-        return
-    }
-    let b = UserData.getUserDataByID(req.params.id)
-    if (b == null) {
-        res.status(404).send('UserData not found')
-        return
-    }
-    if(b.owner != req.session.user) {
-        res.status(403).send("unauthorized")
-        return
-    }
-    b.delete();
+    login_data.delete(user)
     res.json(true)
 })
 
