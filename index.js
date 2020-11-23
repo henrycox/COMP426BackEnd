@@ -27,7 +27,7 @@ const login_data = require('data-store')( {path: process.cwd() + '/data/users.js
 
 app.put('/userData', (req, res) => {
     user = req.session.user
-    let data = req.body.data
+    let data = req.body.notes
     UserData.updateData(user, data)
     res.json(true)
     return
