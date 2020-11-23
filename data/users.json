@@ -1,0 +1,33 @@
+{
+  "henry": {
+    "password": "COMP426",
+    "address": "514 Hillsborough St",
+    "city": "Chapel Hill",
+    "state": "NC",
+    "zip": "27514"
+  },
+  "potato": {
+    "password": "COMP426"
+  },
+  "DonaldTrump": {
+    "password": "republican",
+    "address": "1600 penn",
+    "city": "dc",
+    "state": "MD",
+    "zip": "dczip"
+  },
+  "Neeva": {
+    "password": "COMP",
+    "address": "123 university way",
+    "city": "Chapel Hill",
+    "state": "FL",
+    "zip": "27514"
+  },
+  "Anders": {
+    "password": "pollmaster",
+    "address": "124 University way",
+    "city": "Chapel Hill",
+    "state": "FL",
+    "zip": "27514"
+  }
+}
