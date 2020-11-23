@@ -35,7 +35,7 @@ app.put('/userData', (req, res) => {
 
 app.get('/userData', (req, res) => {
     user = req.session.user
-    let data = userData.getUserDataByID(user)
+    let data = UserData.getUserDataByID(user)
     res.json(data)
     return
 }) 
