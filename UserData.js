@@ -3,12 +3,12 @@ const data = require('data-store')( {path: process.cwd() + '/data/UserData.json'
 
 class UserData {
 
-    constructor(data) {
-        this.data = data
+    constructor(notes) {
+        this.notes = notes
     }
 
-    update (data) {
-        this.data = data
+    update (notes) {
+        this.notes = notes
         data.set(this.user, this)
     }
 
@@ -18,8 +18,8 @@ class UserData {
 
 }
 
-UserData.updateData =(user, data) => {
-     data.set(user, data)
+UserData.updateData =(user, notes) => {
+     data.set(user, notes)
 }
 
 
@@ -31,8 +31,8 @@ UserData.getUserDataByID = (user) => {
     return new UserData(thisData)
 }
 
-UserData.create = (user, data) => {
-    let b = new UserData (data)
+UserData.create = (user, notes) => {
+    let b = new UserData (notes)
     data.set(user, b)
     return b
 }

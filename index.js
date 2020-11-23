@@ -43,8 +43,8 @@ app.get('/userData', (req, res) => {
 
 app.post('/userData', (req, res) => {
     user = req.session.user
-    data = req.body.data
-    userData.create(user, data)
+    data = req.body.notes
+    UserData.create(user, data)
     return res.json(true)
 })
 
@@ -143,11 +143,9 @@ app.post('/createUser', (req, res) => {
 
 
 app.post('/login', (req, res) => {
-    console.log("here")
     let user = req.body.login
     let password = req.body.password
     let user_data = login_data.get(user)
-    console.log(user_data)
     if (user_data == null) {
         res.send("Not Found")
         return
@@ -155,8 +153,6 @@ app.post('/login', (req, res) => {
     
     if (user_data.password == password) {
         req.session.user = user
-        console.log(req.session)
-        console.log(req.session.id)
         res.json(true)
         return
     }
@@ -166,9 +162,6 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/userPersonalInfo', (req, res) => {
-    console.log(req.session)
-    console.log(req.session.user)
-    console.log(req.session.id)
     if(req.session.user == undefined) {
         res.status(403).send("unauthorized")
         return
@@ -208,7 +201,6 @@ app.get('/logout', (req, res) => {
 
 
 const PORT = process.env.PORT || 3030
-console.log(PORT)
 app.listen(PORT, () => {
     console.log("running")
 })
