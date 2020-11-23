@@ -6,7 +6,7 @@ const expressSession = require('express-session')
 const cors = require('cors')
 
 var corsOptions = {
-    origin: 'https://xenodochial-saha-b09044.netlify.app/login',
+    origin: 'https://xenodochial-saha-b09044.netlify.app',
     credentials: true
   }
 app.use(cors(corsOptions))
