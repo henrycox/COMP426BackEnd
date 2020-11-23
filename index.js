@@ -79,7 +79,7 @@ app.put('/updatePassword', (req, res) => {
     }
     let data = login_data.get(user)
     if (user == null) {
-        res.status(404).send('UserData not found')
+        res.status(404).send('User not found')
         return
     }
     if(user != req.session.user) {
@@ -93,6 +93,29 @@ app.put('/updatePassword', (req, res) => {
     return
 })
 
+app.put('/updateAffiliation', (req, res) => {
+    let user = req.session.user
+    let pa = req.body.pa
+    if(req.session.user == undefined) {
+        res.status(403).send("unauthorized")
+        return
+    }
+    let data = login_data.get(user)
+    if (user == null) {
+        res.status(404).send('User not found')
+        return
+    }
+    if(user != req.session.user) {
+        res.status(403).send("unauthorized")
+        return
+    }
+    data.pa = pa
+    login_data.set(user, data)
+
+    res.json(true)
+    return
+})
+
 app.post('/createUser', (req, res) => {
     let user = req.body.login
     let password = req.body.password
@@ -100,6 +123,7 @@ app.post('/createUser', (req, res) => {
     let city = req.body.city
     let state = req.body.state
     let zip = req.body.zip
+    let pa = "Unaffiliated"
     let user_data = login_data.get(user)
     if (user_data != null) {
         res.send("User Already Exists")
@@ -109,7 +133,8 @@ app.post('/createUser', (req, res) => {
                         "address": address,
                         "city": city,
                         "state": state,
-                        "zip": zip} 
+                        "zip": zip,
+                        "pa": pa} 
         login_data.set(user, userData)
         res.json(true)
         return
