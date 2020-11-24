@@ -8,6 +8,7 @@ API Documentation:
  
   
   Login:
+  
   Purpose: to login a user
   Endpoint: POST /login
   
