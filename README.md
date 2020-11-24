@@ -9,8 +9,9 @@ API Documentation:
   
   Login:
   
-  Purpose: to login a user
-  Endpoint: POST /login
+    Purpose: to login a user
+    
+    Endpoint: POST /login
   
   Logout:
     Purpose: to logout a user
