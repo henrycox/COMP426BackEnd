@@ -24,7 +24,11 @@ const pollData = require('./pollData.js')
 const login_data = require('data-store')( {path: process.cwd() + '/data/users.json'})
 
 
+/*
+creates new notes for a user's representatives
 
+
+*/
 app.put('/userData', (req, res) => {
     user = req.session.user
     let data = req.body.notes
@@ -33,6 +37,11 @@ app.put('/userData', (req, res) => {
     return
 })
 
+/*
+retrieves a user's notes on representatives
+
+
+*/
 app.get('/userData', (req, res) => {
     user = req.session.user
     let data = UserData.getUserDataByID(user)
@@ -40,7 +49,11 @@ app.get('/userData', (req, res) => {
     return
 }) 
 
+/*
+updates a user's notes on representatives
 
+
+*/
 app.post('/userData', (req, res) => {
     user = req.session.user
     data = req.body.notes
@@ -72,7 +85,7 @@ app.post('/pollEntry', (req, res) => {
 /*
 returns all stored poll results
 
-returns the stored JSON object to the front end
+returns the stored JSON object (total vote count for each politician) to the front end
 */
 app.get('/pollResults', (req, res) => {
     let results = pollData.getPollData()
@@ -83,7 +96,7 @@ app.get('/pollResults', (req, res) => {
 /*
 updates password
 
-****use this for updating pw in "update account"
+updates a user's password from the Update Account page
 */
 app.put('/updatePassword', (req, res) => {
     let user = req.session.user
@@ -141,7 +154,8 @@ app.put('/updateAffiliation', (req, res) => {
 /*
 creates new user account
 
-
+creates a new account with a user's username, password, address (w/ city, state, zip), and initializes
+    a party affiliation field as "Unaffiliated"
 */
 app.post('/createUser', (req, res) => {
     let user = req.body.login
@@ -192,6 +206,11 @@ app.post('/login', (req, res) => {
 
 })
 
+/*
+returns a user's data fields (username, password, address, etc)
+
+
+*/
 app.get('/userPersonalInfo', (req, res) => {
     if(req.session.user == undefined) {
         res.status(403).send("unauthorized")
@@ -205,6 +224,7 @@ app.get('/userPersonalInfo', (req, res) => {
 this deletes a user's account
 
 option for user to delete their account when updating their account info
+    deltes entire user object from database
 */
 app.delete('/user', (req, res) => {
     if(req.session.user == undefined) {
@@ -229,7 +249,7 @@ app.delete('/user', (req, res) => {
 /*
 logs a user out of the website
 
-
+logs user out and clears cookies
 */
 app.get('/logout', (req, res) => {
     delete req.session.user
