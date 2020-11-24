@@ -5,11 +5,11 @@ API Documentation:
   Create User:
     Purpose: to create a new user
     Endpoint: POST /createUser
-    <br>
+ 
   
   Login:
-    Purpose: to login a user
-    Endpoint: POST /login
+  Purpose: to login a user
+  Endpoint: POST /login
   
   Logout:
     Purpose: to logout a user
